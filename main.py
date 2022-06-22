@@ -67,15 +67,12 @@ def setup_assistant_voice():
     if assistant.speech_language == "en":
         assistant.recognition_language = "en-US"
         if assistant.sex == "female":
-            # Microsoft Zira Desktop - English (United States)
-            ttsEngine.setProperty("voice", voices[1].id)
+            ttsEngine.setProperty("voice", voices[34].id)
         else:
-            # Microsoft David Desktop - English (United States)
             ttsEngine.setProperty("voice", voices[0].id)
     else:
         assistant.recognition_language = "ru-RU"
-        # Microsoft Irina Desktop - Russian
-        ttsEngine.setProperty("voice", voices[18].id)
+        ttsEngine.setProperty("voice", voices[28].id)
 
 
 def record_and_recognize_audio(*args: tuple):
@@ -282,7 +279,9 @@ def get_translation(*args: tuple):
     try:
         # если язык речи ассистента и родной язык пользователя различаются, то перевод выполяется на родной язык
         if assistant.speech_language != person.native_language:
-            translation_result = google_translator.translate(search_term, src=person.target_language, dest=person.native_language)
+            translation_result = google_translator.translate(search_term,
+                                                             src=person.target_language,
+                                                             dest=person.native_language)
 
             play_voice_assistant_speech("The translation for {} in Russian is".format(search_term))
 
@@ -292,7 +291,9 @@ def get_translation(*args: tuple):
 
         # если язык речи ассистента и родной язык пользователя одинаковы, то перевод выполяется на изучаемый язык
         else:
-            translation_result = google_translator.translate(search_term, src=person.target_language, dest=person.native_language)
+            translation_result = google_translator.translate(search_term,
+                                                             src=person.native_language,
+                                                             dest=person.target_language)
             play_voice_assistant_speech("По-английски {} будет как".format(search_term))
 
             # смена голоса ассистента на изучаемый язык пользователя (чтобы можно было произнести перевод)
@@ -487,3 +488,4 @@ if __name__ == "__main__":
         command = voice_input[0]
         command_options = [str(input_part) for input_part in voice_input[1:len(voice_input)]]
         execute_command_with_name(command, command_options)
+
